@@ -6,21 +6,19 @@ interface ResponsiveLayoutProps {
 
 const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({ children }) => {
   const [isPortrait, setIsPortrait] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    // دالة لتحديث اتجاه الشاشة
     const checkOrientation = () => {
       if (window.matchMedia("(orientation: portrait)").matches) {
         setIsPortrait(true);
       } else {
         setIsPortrait(false);
+        setMenuOpen(false); // إغلاق القائمة عند Landscape تلقائي
       }
     };
 
-    // تحقق عند تحميل الصفحة
     checkOrientation();
-
-    // استمع لتغيرات اتجاه الشاشة
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
 
@@ -35,7 +33,7 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({ children }) => {
       
       {/* Overlay يظهر إذا الهاتف عمودي */}
       {isPortrait && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex flex-col items-center justify-center text-white p-4 text-center">
+        <div className="fixed inset-0 bg-black bg-opacity-80 z-[200] flex flex-col items-center justify-center text-white p-4 text-center">
           <p className="text-lg sm:text-xl mb-6 font-semibold">
             اجعل الهاتف بالعرض لتعيش تجربة أفضل
           </p>
@@ -45,14 +43,37 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({ children }) => {
         </div>
       )}
 
+      {/* زر الثلاث نقاط يظهر عند الجوال Landscape */}
+      {!isPortrait && (
+        <div className="fixed top-4 right-4 z-50">
+          <button
+            className="text-2xl p-2 bg-gray-800 text-white rounded-full shadow-lg"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ⋮
+          </button>
+
+          {/* قائمة الأزرار */}
+          {menuOpen && (
+            <div className="mt-2 w-56 bg-white dark:bg-gray-800 shadow-lg rounded-lg flex flex-col divide-y divide-gray-300 dark:divide-gray-700 overflow-hidden border border-white/5">
+              <button className="p-3 text-right hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">تغيير لون الموقع</button>
+              <button className="p-3 text-right hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">معلومات التواصل</button>
+              <button className="p-3 text-right hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">صفحة التقارير</button>
+              <button className="p-3 text-right hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">الصفحة الرئيسية</button>
+              <button className="p-3 text-right hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">النظري + العملي + الكويز</button>
+              <button className="p-3 text-right hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">الإعدادات</button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* المحتوى الرئيسي */}
-      <div className={isPortrait ? "opacity-50 pointer-events-none" : ""}>
+      <div className={isPortrait ? "opacity-50 pointer-events-none blur-sm" : ""}>
         {children}
       </div>
 
       {/* CSS العالمي */}
       <style>{`
-        /* Reset basic behaviors */
         * {
           box-sizing: border-box;
           max-width: 100%;
@@ -64,33 +85,27 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({ children }) => {
           overflow-x: hidden !important;
         }
 
-        /* Arabic Text Adjustments */
         [lang="ar"], [dir="rtl"] {
           line-height: 1.8 !important;
         }
 
-        /* Responsive Text */
         .text-responsive {
           font-size: clamp(0.875rem, 2vw, 1.125rem) !important;
           line-height: clamp(1.6, 3vw, 2) !important;
         }
 
-        /* Images */
         img {
           max-width: 100% !important;
           height: auto !important;
           display: block;
         }
 
-        /* Arabic Mobile Theme */
         .arabic-optimized {
-          background: linear-gradient(135deg, rgba(5,5,10,0.98) 0%, rgba(10,15,25,0.98) 100%);
+          background: #0a0a0a;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          backface-visibility: hidden;
         }
 
-        /* Responsive Grid / Flex for content (Theory, Practice, Quiz) */
         .responsive-grid {
           display: flex;
           flex-wrap: wrap;
