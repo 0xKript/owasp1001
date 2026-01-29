@@ -149,47 +149,9 @@
         animation: scan-line-v 8s linear infinite;
       }
 
-      @keyframes dash-pulse {
-        to { stroke-dashoffset: -20; }
+      @media (max-width: 640px) {
+        .font-pixel { font-size: 2.5rem !important; }
       }
-      .dash-anim {
-        stroke-dasharray: 5;
-        animation: dash-pulse 2s linear infinite;
-      }
-
-      @keyframes gate-jitter {
-        0% { transform: translate(0) rotate(0.5deg); }
-        25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
-        50% { transform: translate(1px, -1px) rotate(0.5deg); }
-        75% { transform: translate(-1px, -1px) rotate(-0.5deg); }
-        100% { transform: translate(0) rotate(0.5deg); }
-      }
-      .animate-gate-jitter:hover { animation: gate-jitter 0.15s infinite; }
-
-      @keyframes fallout {
-        0% { transform: translateY(-20px); opacity: 0; }
-        50% { opacity: 1; }
-        100% { transform: translateY(40px); opacity: 0; }
-      }
-      .fallout-item { animation: fallout 2s linear infinite; }
-
-      @keyframes scan-distortion {
-        0% { clip-path: inset(0 0 90% 0); opacity: 0.5; }
-        50% { clip-path: inset(45% 0 45% 0); opacity: 1; }
-        100% { clip-path: inset(90% 0 0 0); opacity: 0.5; }
-      }
-      .scanner-distort { animation: scan-distortion 2s ease-in-out infinite; }
-
-      @keyframes regress {
-        0% { width: 90%; }
-        50% { width: 10%; }
-        100% { width: 90%; }
-      }
-      .animate-regress { animation: regress 4s ease-in-out infinite; }
-
-      .gate-shape { clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); }
-      .blueprint-shape { clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); border-style: dashed !important; }
-      .cracked-shape { clip-path: polygon(0 0, 45% 2%, 55% 0, 100% 0, 98% 45%, 100% 55%, 100% 100%, 55% 98%, 45% 100%, 0 100%, 2% 55%, 0 45%); }
 
     </style>
   <script type="importmap">
